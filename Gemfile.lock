@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     ror_push_notifications (0.0.1)
-      rails (~> 3.1.12)
+      rails (~> 3.1)
 
 GEM
   remote: http://rubygems.org/
