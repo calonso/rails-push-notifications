@@ -3,8 +3,6 @@ class Rpn::GcmConfig < Rpn::Base
   has_many :devices, :class_name => 'Rpn::Device', :dependent => :destroy, :as => :config
   has_many :notifications, :class_name => 'Rpn::GcmNotification', :dependent => :destroy, :as => :config
 
-  attr_protected :api_key, :app_name
-
   validates :api_key, :presence => true
 
   def send_notifications

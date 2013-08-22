@@ -1,6 +1,6 @@
 module Rpn
 
-  RPN_TIME_TO_LIVE = 4.weeks
+  RPN_TIME_TO_LIVE = 2419200 # 4 weeks
 
   class Base < ActiveRecord::Base
 
@@ -10,7 +10,7 @@ module Rpn
 
     self.abstract_class = true
 
-    def self.table_name # :nodoc:
+    def self.table_name
       self.to_s.gsub("::", "_").tableize
     end
 

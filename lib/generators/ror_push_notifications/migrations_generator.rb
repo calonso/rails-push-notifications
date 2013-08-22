@@ -1,3 +1,5 @@
+require 'rails/generators/active_record'
+
 
 module RorPushNotifications
   module Generators
@@ -19,7 +21,7 @@ module RorPushNotifications
         end
 =end
 
-        templates = %w(create_rpn_apns_configs create_rpn_gcm_configs create_rpn_devices create_rpn_notifications)
+        templates = %w(create_rpn_configs create_rpn_devices create_rpn_notifications)
 
         templates.each do |file|
           begin

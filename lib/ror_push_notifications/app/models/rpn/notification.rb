@@ -1,7 +1,6 @@
 module Rpn
   class Notification < ActiveRecord::Base
 
-    attr_protected :config_id, :data
     attr_accessible :sent_at
 
     validates :config, :presence => true

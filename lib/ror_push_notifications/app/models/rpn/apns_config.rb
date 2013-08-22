@@ -3,8 +3,6 @@ class Rpn::ApnsConfig < Rpn::Base
   has_many :devices, :class_name => 'Rpn::Device', :dependent => :destroy, :as => :config
   has_many :notifications, :class_name => 'Rpn::ApnsNotification', :dependent => :destroy, :as => :config
 
-  attr_protected :apns_dev_cert, :apns_prod_cert
-
   validates :apns_dev_cert, :presence => true
   validates :apns_prod_cert, :presence => true
 

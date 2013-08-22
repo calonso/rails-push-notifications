@@ -1,15 +1,15 @@
-require 'rpn/base'
-require 'rpn/apns_config'
-require 'rpn/gcm_config'
-require 'rpn/device'
-require 'rpn/notification'
-require 'rpn/notifications/apns_notification'
-require 'rpn/notifications/gcm_notification'
-require 'rpn/apns_connection'
-require 'rpn/gcm_connection'
-require 'rpn/notifications_builder'
-require 'rpn/exceptions'
+require 'ror_push_notifications/app/models/rpn/base'
+require 'ror_push_notifications/app/models/rpn/apns_config'
+require 'ror_push_notifications/app/models/rpn/gcm_config'
+require 'ror_push_notifications/app/models/rpn/device'
+require 'ror_push_notifications/app/models/rpn/notification'
+require 'ror_push_notifications/app/models/rpn/notifications/apns_notification'
+require 'ror_push_notifications/app/models/rpn/notifications/gcm_notification'
+require 'ror_push_notifications/libs/rpn/apns_connection'
+require 'ror_push_notifications/libs/rpn/gcm_connection'
+require 'ror_push_notifications/libs/rpn/notifications_builder'
+require 'ror_push_notifications/libs/rpn/exceptions'
 
 
-module RPN
+module Rpn
 end

@@ -14,7 +14,6 @@ class Rpn::ApnsNotification < Rpn::Notification
 
   belongs_to :config, :class_name => 'Rpn::ApnsConfig'
 
-  attr_protected :device_token
   attr_accessible :error
 
   validates :device_token, :presence => true
