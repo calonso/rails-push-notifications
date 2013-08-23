@@ -13,12 +13,14 @@ class Rpn::ApnsConfig < Rpn::Base
   end
 
   def send_notifications
+    Rails.logger.debug "APNS config with id #{id} sending notifications..."
     Rpn::ApnsConnection.open(cert, sandbox_mode) do |conn, sock|
       pending = self.notifications.unsent.to_a
       error = nil
       pending.each do |notif|
         unless error
           begin
+            Rails.logger.debug "Sending notification #{notif.data}"
             conn.write notif.formatted_message
             conn.flush
             if IO.select([conn], nil, nil, 1)
