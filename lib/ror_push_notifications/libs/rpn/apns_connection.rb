@@ -20,7 +20,7 @@ module Rpn
       ssl.sync = true
       ssl.connect
       Rails.logger.debug 'Success!'
-      
+
       yield ssl, socket if block_given?
 
       ssl.close

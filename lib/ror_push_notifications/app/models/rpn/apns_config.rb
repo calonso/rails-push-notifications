@@ -9,7 +9,7 @@ class Rpn::ApnsConfig < Rpn::Base
   validates :apns_prod_cert, :presence => true
 
   def cert
-    Rails.env == 'production' ? apns_prod_cert : apns_dev_cert
+    sandbox_mode ? apns_dev_cert : apns_prod_cert
   end
 
   def send_notifications
