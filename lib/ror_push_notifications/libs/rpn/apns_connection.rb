@@ -7,13 +7,13 @@ module Rpn
     APNS_PRODUCTION_URL = 'gateway.push.apple.com'
     APNS_PORT = 2195
 
-    def self.open cert, &block
+    def self.open cert, sandbox, &block
 
       ctx = OpenSSL::SSL::SSLContext.new
       ctx.key = OpenSSL::PKey::RSA.new cert, ''
       ctx.cert = OpenSSL::X509::Certificate.new cert
 
-      socket = TCPSocket.new host, APNS_PORT
+      socket = TCPSocket.new host(sandbox), APNS_PORT
       ssl = OpenSSL::SSL::SSLSocket.new socket, ctx
       ssl.sync = true
       ssl.connect
@@ -24,8 +24,8 @@ module Rpn
       socket.close
     end
 
-    def self.host
-      Rails.env == 'production' ? APNS_PRODUCTION_URL : APNS_SANDBOX_URL
+    def self.host(sandbox)
+      sandbox ? APNS_SANDBOX_URL : APNS_PRODUCTION_URL
     end
   end
 end

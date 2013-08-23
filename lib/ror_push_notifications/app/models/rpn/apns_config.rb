@@ -3,6 +3,8 @@ class Rpn::ApnsConfig < Rpn::Base
   has_many :devices, :class_name => 'Rpn::Device', :dependent => :destroy, :as => :config
   has_many :notifications, :class_name => 'Rpn::ApnsNotification', :dependent => :destroy, :as => :config
 
+  attr_accessible :sandbox_mode
+
   validates :apns_dev_cert, :presence => true
   validates :apns_prod_cert, :presence => true
 
@@ -11,7 +13,7 @@ class Rpn::ApnsConfig < Rpn::Base
   end
 
   def send_notifications
-    Rpn::ApnsConnection.open(cert) do |conn, sock|
+    Rpn::ApnsConnection.open(cert, sandbox_mode) do |conn, sock|
       pending = self.notifications.unsent.to_a
       error = nil
       pending.each do |notif|
