@@ -12,7 +12,8 @@ class Rpn::ApnsNotification < Rpn::Notification
   SHUTDOWN_STATUS_CODE = 10
   UNKNOWN_ERROR_STATUS_CODE = 255
 
-  belongs_to :config, :class_name => 'Rpn::ApnsConfig'
+  belongs_to :config, class_name: 'Rpn::ApnsConfig'
+  belongs_to :device, class_name: 'Rpn::Device'
 
   attr_accessible :error
 
@@ -42,11 +43,12 @@ class Rpn::ApnsNotification < Rpn::Notification
 
   def self.create_from_params! device, alert, payload
     n = Rpn::ApnsNotification.new
+    n.device = device
     n.config_id = device.config_id
     n.config_type = device.config_type
     n.device_token = device.guid
     n.data = {
-        :aps => {:alert => alert, :badge => 1, :sound => 'true'}
+        aps: {alert: alert, badge: 1, sound: 'true'}
     }.merge(payload).to_json
     raise Rpn::APNSTooLongNotificationException if n.data.length > 256
     n.save!

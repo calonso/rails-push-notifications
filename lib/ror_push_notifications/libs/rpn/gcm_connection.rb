@@ -23,13 +23,14 @@ module Rpn
       case response.code
         when 200
           json = JSON.parse response.body
-          Rails.logger.debug json.inspect
+          notification.handle_response json
         when 400
+          Rails.logger.error "An error occurred sending GCM Notification #{response.body}"
         when 401
+          Rails.logger.error 'Your sender account could not be authenticated'
         else
+          Rails.logger.error 'Unknown error'
       end
-
-
     end
   end
 end
