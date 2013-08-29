@@ -8,7 +8,7 @@ class Rpn::ApnsNotification < Rpn::Notification
   INVALID_TOKEN_SIZE_STATUS_CODE = 5
   INVALID_TOPIC_SIZE_STATUS_CODE = 6
   INVALID_PAYLOAD_SIZE_STATUS_CODE = 7
-  INVALID_TOKEN_STATUS_CODE = 8
+  INVALID_TOKEN_STATUS_CODE = 8 # The token is for dev and the env is prod or viceversa
   SHUTDOWN_STATUS_CODE = 10
   UNKNOWN_ERROR_STATUS_CODE = 255
 
@@ -19,7 +19,7 @@ class Rpn::ApnsNotification < Rpn::Notification
 
   validates :device_token, :presence => true
 
-  scope :unsent, -> { where(sent_at: nil) }
+  scope :unsent, -> { where(sent_at: nil, error: nil) }
 
   def formatted_message
     device_token_bin = []
@@ -46,7 +46,7 @@ class Rpn::ApnsNotification < Rpn::Notification
     n.device = device
     n.config_id = device.config_id
     n.config_type = device.config_type
-    n.device_token = device.guid
+    n.device_token = device.guid.gsub(/\s+/, '')
     n.data = {
         aps: {alert: alert, badge: 1, sound: 'true'}
     }.merge(payload).to_json

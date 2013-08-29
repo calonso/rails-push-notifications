@@ -1,6 +1,7 @@
 class Rpn::ApnsConfig < Rpn::Base
 
   has_many :devices, :class_name => 'Rpn::Device', :dependent => :destroy, :as => :config
+  has_many :notifications, :class_name => 'Rpn::ApnsNotification', :dependent => :delete_all, :as => :config
 
   attr_accessible :sandbox_mode
 
@@ -26,7 +27,7 @@ class Rpn::ApnsConfig < Rpn::Base
                 error = err.unpack('ccN')
                 Rails.logger.warn "An error was found #{error}"
               else
-                Rails.logger.error 'Empty APNS response. Possibly wrong production/development configuration'
+                Rails.logger.error 'Empty APNS response. Possibly wrong pair gateway-certificate configuration'
               end
               break
             end

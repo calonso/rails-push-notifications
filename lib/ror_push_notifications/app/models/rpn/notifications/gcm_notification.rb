@@ -3,7 +3,7 @@ class Rpn::GcmNotification < Rpn::Notification
   belongs_to :config, class_name: 'Rpn::GcmConfig'
   belongs_to :device, class_name: 'Rpn::Device'
 
-  scope :unsent, -> { where(sent_at: nil) }
+  scope :unsent, -> { where(sent_at: nil, error: nil) }
 
   def formatted_message
     data

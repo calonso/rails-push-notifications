@@ -1,6 +1,7 @@
 class Rpn::GcmConfig < Rpn::Base
 
   has_many :devices, :class_name => 'Rpn::Device', :dependent => :destroy, :as => :config
+  has_many :notifications, :class_name => 'Rpn::GcmNotification', :dependent => :delete_all, :as => :config
 
   validates :api_key, :presence => true
 
