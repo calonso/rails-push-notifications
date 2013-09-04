@@ -7,7 +7,7 @@ module Rpn
 
   class GcmConnection
 
-    def self.post notification, key
+    def self.post(notification, key)
       headers = {
           'Content-Type' => 'application/json',
           'Authorization' => "key=#{key}"
@@ -18,19 +18,9 @@ module Rpn
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-      response = http.post url.path, notification.formatted_message, headers
+      response = http.post url.path, notification, headers
 
-      case response.code
-        when 200
-          json = JSON.parse response.body
-          notification.handle_response json
-        when 400
-          Rails.logger.error "An error occurred sending GCM Notification #{response.body}"
-        when 401
-          Rails.logger.error 'Your sender account could not be authenticated'
-        else
-          Rails.logger.error 'Unknown error'
-      end
+      { code: response.code, body: response.body }
     end
   end
 end

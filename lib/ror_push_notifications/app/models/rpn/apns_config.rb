@@ -1,53 +1,81 @@
 class Rpn::ApnsConfig < Rpn::Base
 
-  has_many :devices, :class_name => 'Rpn::Device', :dependent => :destroy, :as => :config
-  has_many :notifications, :class_name => 'Rpn::ApnsNotification', :dependent => :delete_all, :as => :config
+  has_many :devices, class_name: 'Rpn::Device', dependent: :destroy, as: :config
+  has_many :notifications, class_name: 'Rpn::ApnsNotification', dependent: :delete_all, as: :config
+  has_many :bulk_notifications, class_name: 'Rpn::ApnsBulkNotification', dependent: :delete_all, as: :config
 
   attr_accessible :sandbox_mode
 
-  validates :apns_dev_cert, :presence => true
-  validates :apns_prod_cert, :presence => true
+  validates :apns_dev_cert, presence: true
+  validates :apns_prod_cert, presence: true
+
+  def send_notifications
+    pending = self.notifications.unsent.to_a
+    if pending.any?
+      binaries = []
+      pending.each_with_index { |n, i| binaries << n.binary_string(i) }
+      results = do_send_notifications binaries
+
+      # TODO improve performance of this update in a single mass udpate
+      pending.each_with_index { |n, i| n.handle_result results[i] }
+    end
+  end
+
+  def send_bulk_notifications
+    pending = self.bulk_notifications.unsent.to_a
+    if pending.any?
+      binaries = []
+      i = 0
+      pending.each do |n|
+        binaries << n.binary_strings(i)
+        i += n.receivers_count
+      end
+      binaries.flatten!
+      results = do_send_notifications binaries
+
+      read = 0
+      pending.each do |n|
+        own_results = results[read..n.receivers_count]
+        n.handle_results own_results
+        read += own_results.length
+      end
+    end
+  end
+
+  private
 
   def cert
     sandbox_mode ? apns_dev_cert : apns_prod_cert
   end
 
-  def send_notifications
-    pending = self.notifications.unsent.to_a
-    error = nil
-    if pending.any?
-      Rpn::ApnsConnection.open(cert, sandbox_mode) do |conn|
-        pending.each_with_index do |notif, index|
-          begin
-            conn.write notif.formatted_message
-            conn.flush if index == pending.length - 1
-            if IO.select([conn], nil, nil, index == pending.length - 1 ? 2 : 0.001)
-              err = conn.read(6)
-              if err
-                error = err.unpack('ccN')
-                Rails.logger.warn "An error was found #{error}"
-              else
-                Rails.logger.error 'Empty APNS response. Possibly wrong pair gateway-certificate configuration'
-              end
-              break
-            end
-          rescue => e
-            Rails.logger.error 'An error occurred sending notification: ' + e.message
-            e.backtrace.each { |line| Rails.logger.error line }
-            break
+  def do_send_notifications(binaries)
+    current_binaries = binaries
+    results = []
+
+    begin
+      conn, sock = Rpn::ApnsConnection.open(cert, sandbox_mode)
+      current_binaries.each_with_index do |binary, index|
+        last = index == binaries.length - 1
+        conn.write binary
+        conn.flush if last
+
+        if IO.select([conn], nil, nil, last ? 2 : 0.001)
+          err = conn.read 6
+          if err
+            error = err.unpack 'ccN'
+            current_binaries = current_binaries.slice (error[2] + 1)..-1
+            results.slice! error[2]..-1
+            results << error[1]
+            conn.close
+            sock.close
           end
+        else
+          results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
         end
       end
-    end
-
-    # TODO improve performance of this update in a single mass udpate
-    pending.each do |notif|
-      if error and notif.id & 0xFFFFFFFF == error[2]
-        notif.update_attributes :error => error[1]
-        break
-      else
-        notif.touch :sent_at
-      end
-    end
+    end while results.length != binaries.length
+    conn.close
+    sock.close
+    results
   end
 end

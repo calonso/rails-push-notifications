@@ -7,7 +7,7 @@ module Rpn
     APNS_PRODUCTION_URL = 'gateway.push.apple.com'
     APNS_PORT = 2195
 
-    def self.open(cert, sandbox, &block)
+    def self.open(cert, sandbox)
       ctx = OpenSSL::SSL::SSLContext.new
       ctx.key = OpenSSL::PKey::RSA.new cert, ''
       ctx.cert = OpenSSL::X509::Certificate.new cert
@@ -18,10 +18,7 @@ module Rpn
       ssl.sync = true
       ssl.connect
 
-      yield ssl if block_given?
-
-      ssl.close
-      socket.close
+      return ssl, socket
     end
 
     def self.host(sandbox)
