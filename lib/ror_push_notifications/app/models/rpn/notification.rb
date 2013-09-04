@@ -1,17 +1,13 @@
-module Rpn
-  class Notification < ActiveRecord::Base
+class Rpn::Notification < Rpn::Base
 
-    belongs_to :config, polymorphic: true
+  belongs_to :config, polymorphic: true
 
-    attr_accessible :sent_at
+  attr_accessible :sent_at, :error
 
-    validates :config, presence: true
-    validates :data, presence: true
+  validates :config, presence: true
+  validates :data, presence: true
 
-    self.abstract_class = true
+  serialize :data, Hash
 
-    def self.table_name # :nodoc:
-      self.to_s.gsub('::', '_').tableize
-    end
-  end
+  scope :unsent, -> { where(sent_at: nil) }
 end

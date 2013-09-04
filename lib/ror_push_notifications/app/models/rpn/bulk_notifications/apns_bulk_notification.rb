@@ -1,16 +1,8 @@
 require 'ror_push_notifications/libs/rpn/apns_helper'
 
-class Rpn::ApnsBulkNotification < Rpn::Notification
+class Rpn::ApnsBulkNotification < Rpn::BulkNotification
 
   include Rpn::ApnsHelper
-
-  attr_accessible :failures, :succeeded
-
-  serialize :device_tokens, Array
-
-  validate :at_least_1_receiver
-
-  scope :unsent, -> { where(sent_at: nil) }
 
   def handle_results(results)
     succeeded = results.count(NO_ERROR_STATUS_CODE)
@@ -37,11 +29,6 @@ class Rpn::ApnsBulkNotification < Rpn::Notification
     n.device_tokens = device_tokens.map { |t| t.gsub(/\s+/, '') }
     n.data = build_data alert, payload
     n.save!
-  end
-
-  private
-
-  def at_least_1_receiver
-    errors.add(:device_tokens, 'At least 1 receiver is required') if device_tokens.empty?
+    n
   end
 end

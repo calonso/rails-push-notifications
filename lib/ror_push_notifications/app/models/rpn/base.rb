@@ -9,11 +9,6 @@ module Rpn
     end
 
     self.abstract_class = true
-
-    def self.table_name
-      self.to_s.gsub("::", "_").tableize
-    end
-
   end
 
 end

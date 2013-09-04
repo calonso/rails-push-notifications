@@ -4,11 +4,7 @@ class Rpn::ApnsNotification < Rpn::Notification
 
   include Rpn::ApnsHelper
 
-  attr_accessible :error
-
   validates :device_token, presence: true, allow_blank: false
-
-  scope :unsent, -> { where(sent_at: nil) }
 
   def binary_string(index)
     build_apns_binary device_token, data, index
@@ -26,5 +22,6 @@ class Rpn::ApnsNotification < Rpn::Notification
     n.device_token = device.guid.gsub(/\s+/, '')
     n.data = build_data alert, payload
     n.save!
+    n
   end
 end

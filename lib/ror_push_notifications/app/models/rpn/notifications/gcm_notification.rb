@@ -1,11 +1,13 @@
+require 'ror_push_notifications/libs/rpn/gcm_helper'
+
 class Rpn::GcmNotification < Rpn::Notification
 
-  scope :unsent, -> { where(sent_at: nil) }
+  include Rpn::GcmHelper
 
-  attr_accessible :error
+  validates :device_token, presence: true, allow_blank: false
 
   def build_message
-    data
+    data.merge(registration_ids: [device_token]).to_json
   end
 
   def handle_response(response)
@@ -15,21 +17,8 @@ class Rpn::GcmNotification < Rpn::Notification
       when 200
         json = JSON.parse response[:body]
         result = json['results'].first
-        if result['message_id'] and result['registration_id']
-          device = Rpn::Device.find_by_guid(JSON.parse(data)[:registration_ids].first)
-          device.update_attribute :guid, result['registration_id'] if device
-        else
-          case result['error']
-            when 'Unavailable'
-              #GCM Servers not available. Retry some time later
-              was_sent = false
-            when 'NotRegistered', 'InvalidRegistration'
-              device = Rpn::Device.find_by_guid(JSON.parse(data)[:registration_ids].first)
-              device.destroy if device
-              error = result['error']
-            else
-              error = result['error']
-          end
+        unless json['failure'] == 0 and json['canonical_ids'] == 0
+          was_sent, error = apply_result result, device_token
         end
       when 400
         Rails.logger.error "An error occurred sending GCM Notification #{response.body}"
@@ -55,13 +44,10 @@ class Rpn::GcmNotification < Rpn::Notification
   def self.create_from_params!(device, payload)
     n = Rpn::GcmNotification.new
     n.config = device.config
-
-    n.data = {
-        registration_ids: [device.guid],
-        data: payload,
-        time_to_live: Rpn::RPN_TIME_TO_LIVE
-    }.to_json
+    n.device_token = device.guid
+    n.data = build_data payload
     n.save!
+    n
   end
 
 end

@@ -21,7 +21,7 @@ module Rpn::ApnsHelper
       token_bin << token[i..i+1].to_i(16)
     end
 
-    json = data.force_encoding 'ascii-8bit'
+    json = data.to_json.force_encoding 'ascii-8bit'
 
     bytes = [0x01]
     bytes << int_to_4_bytes_array(index)
@@ -38,7 +38,7 @@ module Rpn::ApnsHelper
     def build_data(alert, payload)
       n = {
           aps: {alert: alert, badge: 1, sound: 'true'}
-      }.merge(payload).to_json
+      }.merge(payload)
       raise Rpn::APNSTooLongNotificationException if n.length > 256
       n
     end
