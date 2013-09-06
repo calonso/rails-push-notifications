@@ -5,8 +5,8 @@ class Rpn::ApnsBulkNotification < Rpn::BulkNotification
   include Rpn::ApnsHelper
 
   def handle_results(results)
-    succeeded = results.count(NO_ERROR_STATUS_CODE)
-    update_attributes failures: receivers_count - succeeded, succeeded: succeeded, sent_at: Time.now
+    success = results.count(NO_ERROR_STATUS_CODE)
+    update_attributes failed: receivers_count - success, succeeded: success, sent_at: Time.now
   end
 
   def receivers_count
@@ -23,9 +23,10 @@ class Rpn::ApnsBulkNotification < Rpn::BulkNotification
 
   protected
 
-  def self.create_from_params!(device_tokens, config, alert, payload)
+  def self.create_from_params!(device_tokens, config_id, config_type, alert, payload)
     n = Rpn::ApnsBulkNotification.new
-    n.config = config
+    n.config_id = config_id
+    n.config_type = config_type
     n.device_tokens = device_tokens.map { |t| t.gsub(/\s+/, '') }
     n.data = build_data alert, payload
     n.save!

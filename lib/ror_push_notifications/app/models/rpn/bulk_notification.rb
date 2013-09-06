@@ -1,12 +1,17 @@
-class Rpn::BulkNotification < Rpn::Notification
+class Rpn::BulkNotification < Rpn::Base
 
-  attr_accessible :failures, :succeeded
+  belongs_to :config, polymorphic: true
 
-  scope :unsent, -> { where(sent_at: nil) }
+  attr_accessible :sent_at, :failed, :succeeded
 
+  validates :config, presence: true
+  validates :data, presence: true
+  validate :at_least_1_receiver
+
+  serialize :data, Hash
   serialize :device_tokens, Array
 
-  validate :at_least_1_receiver
+  scope :unsent, -> { where(sent_at: nil) }
 
   protected
 

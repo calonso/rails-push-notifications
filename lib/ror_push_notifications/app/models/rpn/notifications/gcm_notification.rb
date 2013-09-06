@@ -16,8 +16,8 @@ class Rpn::GcmNotification < Rpn::Notification
     case response[:code].to_i
       when 200
         json = JSON.parse response[:body]
-        result = json['results'].first
         unless json['failure'] == 0 and json['canonical_ids'] == 0
+          result = json['results'].first
           was_sent, error = apply_result result, device_token
         end
       when 400

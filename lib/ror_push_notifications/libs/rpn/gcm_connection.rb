@@ -3,9 +3,9 @@ require 'net/https'
 
 module Rpn
 
-  GCM_URL = 'https://android.googleapis.com/gcm/send'
-
   class GcmConnection
+
+    GCM_URL = 'https://android.googleapis.com/gcm/send'
 
     def self.post(notification, key)
       headers = {

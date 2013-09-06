@@ -1,6 +1,6 @@
 class Rpn::ApnsConfig < Rpn::Base
 
-  has_many :devices, class_name: 'Rpn::Device', dependent: :destroy, as: :config
+  has_many :devices, class_name: 'Rpn::Device', dependent: :delete_all, as: :config
   has_many :notifications, class_name: 'Rpn::ApnsNotification', dependent: :delete_all, as: :config
   has_many :bulk_notifications, class_name: 'Rpn::ApnsBulkNotification', dependent: :delete_all, as: :config
 

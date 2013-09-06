@@ -16,10 +16,10 @@ class Rpn::GcmBulkNotification < Rpn::BulkNotification
     i = 0
     fails = 0
     successes = 0
-    responses.each do |code, body|
-      case code.to_i
+    responses.each do |response|
+      case response[:code].to_i
         when 200
-          json = JSON.parse body
+          json = JSON.parse response[:body]
           if json['failure'] == 0 and json['canonical_ids'] == 0
             successes += json['success']
             i += json['success']
@@ -42,15 +42,16 @@ class Rpn::GcmBulkNotification < Rpn::BulkNotification
       end
     end
 
-    update_attributes failures: fails, successes: successes, sent_at: Time.now
+    update_attributes failed: fails, succeeded: successes, sent_at: Time.now
   end
 
   protected
 
-  def self.create_from_params!(device_ids, config, payload)
+  def self.create_from_params!(device_tokens, config_id, config_type, payload)
     n = Rpn::GcmBulkNotification.new
-    n.device_tokens = device_ids
-    n.config = config
+    n.device_tokens = device_tokens
+    n.config_id = config_id
+    n.config_type = config_type
     n.data = build_data payload
     n.save!
     n

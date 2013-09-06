@@ -6,6 +6,7 @@ class Rpn::Notification < Rpn::Base
 
   validates :config, presence: true
   validates :data, presence: true
+  validates :device_token, presence: true
 
   serialize :data, Hash
 

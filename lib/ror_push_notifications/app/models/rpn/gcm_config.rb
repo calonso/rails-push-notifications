@@ -1,6 +1,6 @@
 class Rpn::GcmConfig < Rpn::Base
 
-  has_many :devices, class_name: 'Rpn::Device', dependent: :destroy, as: :config
+  has_many :devices, class_name: 'Rpn::Device', dependent: :delete_all, as: :config
   has_many :notifications, class_name: 'Rpn::GcmNotification', dependent: :delete_all, as: :config
   has_many :bulk_notifications, class_name: 'Rpn::GcmBulkNotification', dependent: :delete_all, as: :config
 
@@ -19,7 +19,7 @@ class Rpn::GcmConfig < Rpn::Base
   end
 
   def send_bulk_notifications
-    pending = self.notifications.unsent.to_a
+    pending = self.bulk_notifications.unsent.to_a
     if pending.any?
       pending.each do |n|
         responses = n.build_messages.map do |msg|
