@@ -35,9 +35,9 @@ module Rpn::ApnsHelper
 
   module ClassMethods
 
-    def build_data(alert, payload)
+    def build_data(alert, badge, sound, payload)
       n = {
-          aps: {alert: alert, badge: 1, sound: 'true'}
+          aps: {alert: alert, badge: badge, sound: sound}
       }.merge(payload)
       raise Rpn::APNSTooLongNotificationException if n.length > 256
       n

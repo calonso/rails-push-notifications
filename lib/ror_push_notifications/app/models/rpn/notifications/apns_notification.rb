@@ -16,11 +16,11 @@ class Rpn::ApnsNotification < Rpn::Notification
 
   protected
 
-  def self.create_from_params!(device, alert, payload)
-    n = Rpn::ApnsNotification.new
+  def self.create_from_params!(device, alert, badge, sound, payload)
+    n = ApnsNotification.new
     n.config = device.config
     n.device_token = device.guid.gsub(/\s+/, '')
-    n.data = build_data alert, payload
+    n.data = build_data alert, badge, sound, payload
     n.save!
     n
   end

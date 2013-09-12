@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ror_push_notifications (0.0.1)
+    Rpn (Ruby on Rails Push Notifications) (1.0.0)
       rails (~> 3.1)
 
 GEM
@@ -48,7 +48,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mime-types (1.24)
+    mime-types (1.25)
     multi_json (1.7.9)
     pg (0.16.0)
     polyglot (0.3.3)
@@ -94,6 +94,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  Rpn (Ruby on Rails Push Notifications)!
   jquery-rails
   pg
-  ror_push_notifications!

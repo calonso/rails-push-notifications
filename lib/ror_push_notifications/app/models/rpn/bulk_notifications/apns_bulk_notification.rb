@@ -23,12 +23,12 @@ class Rpn::ApnsBulkNotification < Rpn::BulkNotification
 
   protected
 
-  def self.create_from_params!(device_tokens, config_id, config_type, alert, payload)
-    n = Rpn::ApnsBulkNotification.new
+  def self.create_from_params!(device_tokens, config_id, alert, badge, sound, payload)
+    n = ApnsBulkNotification.new
     n.config_id = config_id
-    n.config_type = config_type
+    n.config_type = ApnsConfig.name
     n.device_tokens = device_tokens.map { |t| t.gsub(/\s+/, '') }
-    n.data = build_data alert, payload
+    n.data = build_data alert, badge, sound, payload
     n.save!
     n
   end

@@ -42,7 +42,7 @@ class Rpn::GcmNotification < Rpn::Notification
   protected
 
   def self.create_from_params!(device, payload)
-    n = Rpn::GcmNotification.new
+    n = GcmNotification.new
     n.config = device.config
     n.device_token = device.guid
     n.data = build_data payload
