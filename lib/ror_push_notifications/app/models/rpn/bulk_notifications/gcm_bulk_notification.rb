@@ -48,7 +48,7 @@ class Rpn::GcmBulkNotification < Rpn::BulkNotification
   protected
 
   def self.create_from_params!(device_tokens, config_id, payload)
-    n = GcmBulkNotification.new
+    n = Rpn::GcmBulkNotification.new
     n.device_tokens = device_tokens
     n.config_id = config_id
     n.config_type = GcmConfig.name
