@@ -51,7 +51,7 @@ class Rpn::GcmBulkNotification < Rpn::BulkNotification
     n = Rpn::GcmBulkNotification.new
     n.device_tokens = device_tokens
     n.config_id = config_id
-    n.config_type = GcmConfig.name
+    n.config_type = Rpn::GcmConfig.name
     n.data = build_data payload
     n.save!
     n
