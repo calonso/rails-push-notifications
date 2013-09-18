@@ -48,10 +48,10 @@ module Rpn::ApnsHelper
   private
 
   def int_to_4_bytes_array(value)
-    [value & 0xFF000000, value & 0xFF0000, value & 0xFF00, value & 0xFF]
+    [(value & 0xFF000000) >> 24, (value & 0xFF0000) >> 16, (value & 0xFF00) >> 8, value & 0xFF]
   end
 
   def int_to_2_bytes_array(value)
-    [value & 0xFF00, value & 0xFF]
+    [(value & 0xFF00) >> 8, value & 0xFF]
   end
 end

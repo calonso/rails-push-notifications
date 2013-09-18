@@ -1,5 +1,7 @@
 class Rpn::ApnsConfig < Rpn::Base
 
+  # TODO limit of 4 bytes number is 4.294.967.295. Restart the pushing indexes!!
+
   has_many :devices, class_name: 'Rpn::Device', dependent: :delete_all, as: :config
   has_many :notifications, class_name: 'Rpn::ApnsNotification', dependent: :delete_all, as: :config
   has_many :bulk_notifications, class_name: 'Rpn::ApnsBulkNotification', dependent: :delete_all, as: :config
@@ -35,7 +37,7 @@ class Rpn::ApnsConfig < Rpn::Base
 
       read = 0
       pending.each do |n|
-        own_results = results[read..n.receivers_count]
+        own_results = results[read, n.receivers_count]
         n.handle_results own_results
         read += own_results.length
       end
