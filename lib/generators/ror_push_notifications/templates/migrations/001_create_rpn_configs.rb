@@ -1,5 +1,5 @@
 class CreateRpnConfigs < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :rpn_apns_configs do |t|
       t.text :apns_dev_cert
       t.text :apns_prod_cert

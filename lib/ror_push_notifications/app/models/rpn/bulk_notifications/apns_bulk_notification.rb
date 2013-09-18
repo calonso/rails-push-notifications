@@ -21,8 +21,6 @@ class Rpn::ApnsBulkNotification < Rpn::BulkNotification
     binaries
   end
 
-  protected
-
   def self.create_from_params!(device_tokens, config_id, alert, badge, sound, payload)
     n = Rpn::ApnsBulkNotification.new
     n.config_id = config_id
@@ -32,4 +30,5 @@ class Rpn::ApnsBulkNotification < Rpn::BulkNotification
     n.save!
     n
   end
+
 end

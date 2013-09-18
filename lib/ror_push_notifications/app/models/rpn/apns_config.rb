@@ -49,13 +49,16 @@ class Rpn::ApnsConfig < Rpn::Base
   end
 
   def do_send_notifications(binaries)
-    current_binaries = binaries
     results = []
+    last_accepted_index = 0
 
     begin
       conn, sock = Rpn::ApnsConnection.open(cert, sandbox_mode)
-      current_binaries.each_with_index do |binary, index|
-        last = index == binaries.length - 1
+
+      for i in last_accepted_index..(binaries.length - 1)
+        binary = binaries[i]
+        last = i == binaries.length - 1
+
         conn.write binary
         conn.flush if last
 
@@ -63,11 +66,14 @@ class Rpn::ApnsConfig < Rpn::Base
           err = conn.read 6
           if err
             error = err.unpack 'ccN'
-            current_binaries = current_binaries.slice (error[2] + 1)..-1
+            last_accepted_index = error[2] + 1
             results.slice! error[2]..-1
             results << error[1]
-            conn.close
-            sock.close
+            unless last
+              conn.close
+              sock.close
+            end
+            break
           end
         else
           results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
