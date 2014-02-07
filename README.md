@@ -12,7 +12,7 @@ Rpn supports:
 ## Installation
 To install the gem simply add this line to your Gemfile
 
-    gem 'ror_push_notifications', '= 1.0.0', git: 'git://github.com/calonso/ror-push-notifications'
+    gem 'ror_push_notifications', '= 1.0.0', git: 'https://github.com/calonso/ror-push-notifications.git'
 
 and then install it by running
 

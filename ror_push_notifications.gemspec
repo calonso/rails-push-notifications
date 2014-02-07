@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*'] + %w(MIT-LICENSE Rakefile README.md)
 
-  s.add_dependency 'rails', '~> 3.1'
+  s.add_dependency 'activerecord'  
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rspec', '~> 2.14.0'
