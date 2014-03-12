@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rails-push-notifications by calonso</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Rails-push-notifications</h1>
+        <p>Professional iOS and Android push notifications for Ruby On Rails</p>
+
+        <p class="view"><a href="https://github.com/calonso/rails-push-notifications">View the Project on GitHub <small>calonso/rails-push-notifications</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/calonso/rails-push-notifications/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/calonso/rails-push-notifications/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/calonso/rails-push-notifications">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="rpn-ruby-on-rails-push-notifications" class="anchor" href="#rpn-ruby-on-rails-push-notifications"><span class="octicon octicon-link"></span></a>Rpn (Ruby on Rails Push Notifications)</h1>
+
+<h2>
+<a name="professional-ios-and-android-push-notifications-for-ruby-on-rails" class="anchor" href="#professional-ios-and-android-push-notifications-for-ruby-on-rails"><span class="octicon octicon-link"></span></a>Professional iOS and Android push notifications for Ruby on Rails</h2>
+
+<p>Rpn is an intuitive and easy to use gem that will allow you to easily add both iOS and Android Push Notifications.</p>
+
+<p>Rpn supports:</p>
+
+<ul>
+<li>Multiple Apple and Android applications/configurations</li>
+<li>Single and Bulk notifications</li>
+<li>Fully customizable notification's contents</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>To install the gem simply add this line to your Gemfile</p>
+
+<pre><code>gem 'ror_push_notifications', '= 1.0.0', git: 'https://github.com/calonso/ror-push-notifications.git'
+</code></pre>
+
+<p>and then install it by running</p>
+
+<pre><code>$ bundle install
+</code></pre>
+
+<p>Once you have it installed, you need to generate the database migrations in order to build the required database structure and then run the newly generated migrations. So do it by executing:</p>
+
+<pre><code>$ rails generate ror_push_notifications:migrations
+$ rake db:migrate
+</code></pre>
+
+<h2>
+<a name="applications-setup" class="anchor" href="#applications-setup"><span class="octicon octicon-link"></span></a>Applications setup</h2>
+
+<p>First step when using Rpn is to setup Apple and/or Android applications to which the notifications will be associated to. Each platform has it's own details and process.</p>
+
+<h3>
+<a name="apple-applications-setup" class="anchor" href="#apple-applications-setup"><span class="octicon octicon-link"></span></a>Apple Applications setup</h3>
+
+<p>Once you have configured your app as Apple Push Notifications Service enabled and you have requested and downloaded both the development and production certificates, it's time to convert them to a readable format (.pem) to import them into Rpn afterwards.</p>
+
+<p>To convert the certificates the first you need is to export them as .p12 files. To do this:</p>
+
+<ol>
+<li>Open Keychain Application of your Macintosh computer</li>
+<li>Find the recently generated certificates. Click the disclosure button on the left of your certificate and select both the certificate and the contained key</li>
+<li>Right click and select 'Export 2 items...'. Then select the desired .p12 format and save it to your disk</li>
+</ol><p>Once exported, to convert it to the readable .pem format simply run:</p>
+
+<pre><code>$ openssl pkcs12 -in &lt;your .p12 filename&gt; -out &lt;your output .pem filename&gt;.pem -nodes -clcerts
+</code></pre>
+
+<p>Now it's time to create our applications</p>
+
+<pre><code>app = Rpn::ApnsConfig.new
+app.apns_dev_cert = File.read('path/to/your/development/certificate.pem')
+app.apns_prod_cert = File.read('path/to/your/production/certificate.pem')
+app.sandbox_mode = true
+app.save
+</code></pre>
+
+<p>And that's it!! You can create as many different applications as you want. Rpn gem supports it.</p>
+
+<h3>
+<a name="android-applications-setup" class="anchor" href="#android-applications-setup"><span class="octicon octicon-link"></span></a>Android Applications setup</h3>
+
+<p>The only thing you need is the API_KEY that you will get from the Google APIS Console &gt; API Access</p>
+
+<pre><code>app = Rpn::GcmConfig.new
+app.api_key = '&lt;your app api key&gt;'
+app.save
+</code></pre>
+
+<p>That's all. You have your applications' configurations stored in Rpn. Now it's time to start registering devices.</p>
+
+<h2>
+<a name="registering-devices" class="anchor" href="#registering-devices"><span class="octicon octicon-link"></span></a>Registering devices</h2>
+
+<p>Devices are associated to one single application.</p>
+
+<pre><code>app = # Find your Apple or Android app
+app.devices.create guid: &lt;iOS device token or Android registration id&gt;
+</code></pre>
+
+<p>Simple, isnt't it?</p>
+
+<h2>
+<a name="creating-notifications" class="anchor" href="#creating-notifications"><span class="octicon octicon-link"></span></a>Creating notifications</h2>
+
+<h3>
+<a name="ios-notifications" class="anchor" href="#ios-notifications"><span class="octicon octicon-link"></span></a>iOS Notifications</h3>
+
+<p>To create new iOS notifications is as simple as</p>
+
+<pre><code>device = # Find your iOS device
+app = device.config
+alert = 'This is the alert message'
+badge = 1
+sound = 'true'
+payload = { a: 1, b: 2, c:3 }
+notification = Rpn::ApnsNotification.create_from_params! device, alert, badge, sound, payload
+# Then, send the notifications
+app.send_notifications
+</code></pre>
+
+<p>The generated notification will be something like this:</p>
+
+<pre><code>{ aps: {
+    badge: 1,
+    sound: 'true',
+    alert: 'This is the alert message' },
+  a: 1,
+  b: 2,
+  c: 3 }
+</code></pre>
+
+<h3>
+<a name="android-notifications" class="anchor" href="#android-notifications"><span class="octicon octicon-link"></span></a>Android notifications</h3>
+
+<p>To create new Android notification the process is much the same as for the iOS ones:</p>
+
+<pre><code>device = # Find your Android device
+app = device.config
+payload = { a: 1, b: 2, c: 3, message: 'This is the alert message' }
+notification = Rpn::GcmNotification.create_from_params! device, payload
+# Finally, send the notifications
+app.send_notifications
+</code></pre>
+
+<p>The generated Android notification will be something like this:</p>
+
+<pre><code>{ registration_ids: [&lt;registration id of the device&gt;],
+  time_to_live: 2419200,
+  data: {
+    a: 1,
+    b: 2,
+    c: 3,
+    message: 'This is the alert message'
+  }
+}
+</code></pre>
+
+<h3>
+<a name="the-notifications-builder-class" class="anchor" href="#the-notifications-builder-class"><span class="octicon octicon-link"></span></a>The Notifications Builder class</h3>
+
+<p>As you can see, much of the notification creation process is the same in both platforms, that's why I advice you to
+create a builder like the one provided at libs/rpn/notifications_builder.rb. This is only a starting point, you can use
+it as given or you may modify it to suit your needs.</p>
+
+<p>Creating notifications with the builder is similar to the previous examples but you can abstract your code from the
+notification type. Special iOS parameters such as badge and sound are assigned default 1 and 'true' values respectively.</p>
+
+<pre><code>device = # Find your device
+app = device.config
+alert = 'This is the alert message'
+payload = { a: 1, b: 2, c:3 }
+notification = Rpn::NotificationsBuilder.create_notification! device, alert, payload
+# Then, send the notifications
+app.send_notifications
+</code></pre>
+
+<h2>
+<a name="creating-bulk-notifications" class="anchor" href="#creating-bulk-notifications"><span class="octicon octicon-link"></span></a>Creating bulk notifications</h2>
+
+<p>Last but not least. Rpn gem is able to manage and send bulk notifications for both platforms in an easy way.</p>
+
+<h3>
+<a name="ios-bulk-notifications" class="anchor" href="#ios-bulk-notifications"><span class="octicon octicon-link"></span></a>iOS bulk notifications</h3>
+
+<pre><code>app = # Find your iOS application
+tokens = app.devices.collect(&amp;:guid)
+alert = 'Alert message for bulk notification'
+badge = 1
+sound = 'true'
+payload = { a: 1, b: 2, c:3 }
+notification = Rpn::ApnsBulkNotification.create_from_params! tokens, app.id, alert, badge, sound, payload
+# Now send the notifications
+app.send_bulk_notifications
+</code></pre>
+
+<h3>
+<a name="android-bulk-notifications" class="anchor" href="#android-bulk-notifications"><span class="octicon octicon-link"></span></a>Android bulk notifications</h3>
+
+<pre><code>app = # Find your iOS application
+tokens = app.devices.collect(&amp;:guid)
+payload = { a: 1, b: 2, c: 3, message: 'Alert message for bulk notification' }
+notification = Rpn::GcmBulkNotification.create_from_params! tokens, app.id, payload
+# Now send the notifications
+app.send_bulk_notifications
+</code></pre>
+
+<h3>
+<a name="the-notifications-builder-class-1" class="anchor" href="#the-notifications-builder-class-1"><span class="octicon octicon-link"></span></a>The Notifications Builder Class</h3>
+
+<p>Now again, to try to simplify even more the bulk notifications creation, a method is given in the Rpn::NotificationsBuilder class.
+To create bulk notifications, regarding only at the devices where you want to push, simply do:</p>
+
+<pre><code>devices = # Find your devices
+device_ids = devices.pluck(:id)
+alert = 'Alert message for bulk notification'
+payload = { a: 1, b: 2, c: 3 }
+Rpn::NotificationsBuilder.create_bulk_notification! device_ids, alert, payload
+</code></pre>
+
+<p>And that's all!! Of course, you should run the notifications delivery process in worker threads or something similar.</p>
+
+<p>Released under the MIT-LICENSE.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/calonso">calonso</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
