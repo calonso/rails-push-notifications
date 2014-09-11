@@ -77,7 +77,7 @@ class Rpn::ApnsConfig < Rpn::Base
 
         puts 'Before if'
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
-          puts 'In the if conn: #{conn}'
+          puts "In the if conn: #{conn}"
           err = conn.read 6
           if err
             puts 'Error: #{err[1]}'
