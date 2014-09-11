@@ -18,15 +18,15 @@ class Rpn::ApnsConfig < Rpn::Base
       binaries = []
       puts 'antes del bucle'
       pending.each_with_index { |n, i| binaries << n.binary_string(i) }
-      puts 'después del bucle'
+      puts 'despues del bucle'
       puts 'antes de binarios'
       results = do_send_notifications binaries
-      puts 'después de binarios'
+      puts 'despues de binarios'
 
       puts 'Antes del handle_result'
       # TODO improve performance of this update in a single mass udpate
       pending.each_with_index { |n, i| n.handle_result results[i] }
-      puts 'Después del handle_result'
+      puts 'Despues del handle_result'
     end
   end
 
