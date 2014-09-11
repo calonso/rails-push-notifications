@@ -77,9 +77,10 @@ class Rpn::ApnsConfig < Rpn::Base
 
         puts 'Before if'
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
+          puts 'In the if conn: #{conn}'
           err = conn.read 6
           if err
-            puts 'Error: #{error[1]}'
+            puts 'Error: #{err[1]}'
             error = err.unpack 'ccN'
             last_accepted_index = error[2] + 1
             results.slice! error[2]..-1
@@ -93,6 +94,7 @@ class Rpn::ApnsConfig < Rpn::Base
         else
           puts 'In the else'
           results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
+          puts results
         end
         puts 'after if'
       end
