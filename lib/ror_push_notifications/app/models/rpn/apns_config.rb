@@ -75,6 +75,7 @@ class Rpn::ApnsConfig < Rpn::Base
         conn.write binary
         conn.flush if last
 
+        puts 'Before if'
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
           err = conn.read 6
           if err
@@ -90,8 +91,10 @@ class Rpn::ApnsConfig < Rpn::Base
             break
           end
         else
+          puts 'In the else'
           results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
         end
+        puts 'after if'
       end
       puts 'After For'
     end while results.length != binaries.length
