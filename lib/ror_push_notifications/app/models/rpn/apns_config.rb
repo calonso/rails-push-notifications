@@ -79,7 +79,6 @@ class Rpn::ApnsConfig < Rpn::Base
 
         puts 'Before if'
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
-
           err = conn.read 6
           if err
             puts 'Error: #{err[1]}'
@@ -92,6 +91,10 @@ class Rpn::ApnsConfig < Rpn::Base
               sock.close
             end
             break
+          else
+            puts 'In the else'
+            results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
+            puts results
           end
         else
           puts 'In the else'
