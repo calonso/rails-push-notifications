@@ -72,12 +72,13 @@ class Rpn::ApnsConfig < Rpn::Base
         binary = binaries[i]
         last = i == binaries.length - 1
 
-        conn.write binary
+        res = conn.write binary
+        puts "Result from writing #{res}"
         conn.flush if last
 
         puts 'Before if'
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
-          puts "In the if conn: #{conn}"
+          puts "In the if conn: #{conn.read 5}"
           err = conn.read 6
           if err
             puts 'Error: #{err[1]}'
