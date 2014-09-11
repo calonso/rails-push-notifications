@@ -14,19 +14,12 @@ class Rpn::ApnsConfig < Rpn::Base
   def send_notifications
     pending = self.notifications.unsent.to_a
     if pending.any?
-      puts 'algo'
       binaries = []
-      puts 'antes del bucle'
       pending.each_with_index { |n, i| binaries << n.binary_string(i) }
-      puts 'despues del bucle'
-      puts 'antes de binarios'
       results = do_send_notifications binaries
-      puts 'despues de binarios'
 
-      puts 'Antes del handle_result'
       # TODO improve performance of this update in a single mass udpate
       pending.each_with_index { |n, i| n.handle_result results[i] }
-      puts 'Despues del handle_result'
     end
   end
 
@@ -61,27 +54,19 @@ class Rpn::ApnsConfig < Rpn::Base
     results = []
     last_accepted_index = 0
 
-    puts 'Before while'
     begin
-      puts 'Before ApnsConnection'
       conn, sock = Rpn::ApnsConnection.open(cert, sandbox_mode)
-      puts 'After ApnsConnection'
 
-      puts 'Before For'
       for i in last_accepted_index..(binaries.length - 1)
         binary = binaries[i]
         last = i == binaries.length - 1
 
         res = conn.write binary
-        puts "Result from writing #{res}"
         conn.flush if last
-        puts "conn.flush" if last
 
-        puts 'Before if'
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
           err = conn.read 6
           if err
-            puts 'Error: #{err[1]}'
             error = err.unpack 'ccN'
             last_accepted_index = error[2] + 1
             results.slice! error[2]..-1
@@ -92,20 +77,15 @@ class Rpn::ApnsConfig < Rpn::Base
             end
             break
           else
-            puts 'In the else'
             results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
             puts results
           end
         else
-          puts 'In the else'
           results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
           puts results
         end
-        puts 'after if'
       end
-      puts 'After For'
     end while results.length != binaries.length
-    puts 'After while'
     conn.close
     sock.close
     results
