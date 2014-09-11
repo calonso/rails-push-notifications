@@ -61,9 +61,13 @@ class Rpn::ApnsConfig < Rpn::Base
     results = []
     last_accepted_index = 0
 
+    puts 'Before while'
     begin
+      puts 'Before ApnsConnection'
       conn, sock = Rpn::ApnsConnection.open(cert, sandbox_mode)
+      puts 'After ApnsConnection'
 
+      puts 'Before For'
       for i in last_accepted_index..(binaries.length - 1)
         binary = binaries[i]
         last = i == binaries.length - 1
@@ -88,7 +92,9 @@ class Rpn::ApnsConfig < Rpn::Base
           results << Rpn::ApnsNotification::NO_ERROR_STATUS_CODE
         end
       end
+      puts 'After For'
     end while results.length != binaries.length
+    puts 'After while'
     conn.close
     sock.close
     results
