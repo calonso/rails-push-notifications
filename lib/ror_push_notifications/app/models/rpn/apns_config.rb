@@ -78,6 +78,7 @@ class Rpn::ApnsConfig < Rpn::Base
         if IO.select([conn], nil, nil, last ? 2 : 0.001)
           err = conn.read 6
           if err
+            puts 'Error: #{error[1]}'
             error = err.unpack 'ccN'
             last_accepted_index = error[2] + 1
             results.slice! error[2]..-1
