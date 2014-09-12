@@ -3,6 +3,7 @@ class CreateRpnConfigs < ActiveRecord::Migration
     create_table :rpn_apns_configs do |t|
       t.text :apns_dev_cert
       t.text :apns_prod_cert
+      t.text :apns_cert_pass
       t.boolean :sandbox_mode
 
       t.timestamps

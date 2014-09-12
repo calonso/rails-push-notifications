@@ -10,6 +10,7 @@ class Rpn::ApnsConfig < Rpn::Base
 
   validates :apns_dev_cert, presence: true
   validates :apns_prod_cert, presence: true
+  validates :apns_cert_pass, presence: true
 
   def send_notifications
     pending = self.notifications.unsent.to_a
@@ -55,7 +56,7 @@ class Rpn::ApnsConfig < Rpn::Base
     last_accepted_index = 0
 
     begin
-      conn, sock = Rpn::ApnsConnection.open(cert, sandbox_mode)
+      conn, sock = Rpn::ApnsConnection.open(cert, apns_cert_pass, sandbox_mode)
 
       for i in last_accepted_index..(binaries.length - 1)
         binary = binaries[i]
