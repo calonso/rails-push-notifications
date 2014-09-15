@@ -7,7 +7,7 @@ module Rpn
     APNS_PRODUCTION_URL = 'gateway.push.apple.com'
     APNS_PORT = 2195
 
-    def self.open(cert, sandbox)
+    def self.open(cert, cert_pass, sandbox)
       ctx = OpenSSL::SSL::SSLContext.new
       ctx.key = OpenSSL::PKey::RSA.new cert, ''
       ctx.cert = OpenSSL::X509::Certificate.new cert

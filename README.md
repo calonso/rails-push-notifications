@@ -46,6 +46,7 @@ Now it's time to create our applications
     app = Rpn::ApnsConfig.new
     app.apns_dev_cert = File.read('path/to/your/development/certificate.pem')
     app.apns_prod_cert = File.read('path/to/your/production/certificate.pem')
+    app.apns_cert_pass = 'my pass phrase'
     app.sandbox_mode = true
     app.save
 
