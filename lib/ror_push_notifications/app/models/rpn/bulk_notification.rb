@@ -2,8 +2,6 @@ class Rpn::BulkNotification < Rpn::Base
 
   belongs_to :config, polymorphic: true
 
-  attr_accessible :sent_at, :failed, :succeeded
-
   validates :config, presence: true
   validates :data, presence: true
   validate :at_least_1_receiver

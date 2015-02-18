@@ -2,8 +2,6 @@ class Rpn::Notification < Rpn::Base
 
   belongs_to :config, polymorphic: true
 
-  attr_accessible :sent_at, :error
-
   validates :config, presence: true
   validates :data, presence: true
   validates :device_token, presence: true
