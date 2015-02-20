@@ -12,11 +12,20 @@ Gem::Specification.new do |s|
   s.summary     = 'Professional iOS and Android push notifications for Ruby on Rails'
   s.description = 'Free Open Source RoR gem for performing push notifications for both iOS and Android devices'
 
-  s.files = Dir['{app,config,db,lib}/**/*'] + %w(MIT-LICENSE Rakefile README.md)
+  s.files = Dir['{lib}/**/*'] + %w(MIT-LICENSE Rakefile README.md)
 
-  s.add_dependency 'activerecord', '~> 4.0'
+  s.test_files = Dir["spec/**/*"]
+  s.require_paths = ["lib"]
+
+  s.license = 'MIT'
+
+  s.required_ruby_version = '>= 1.9.3'
+
+  s.add_dependency 'rails', '~> 4.1'
 
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rspec', '~> 3.2'
+  s.add_development_dependency "rspec-rails"
   s.add_development_dependency 'factory_girl_rails', '~> 4.0'
+  s.add_development_dependency 'generator_spec', '~> 0.9.0'
 end

@@ -1,33 +1,36 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-require 'rubygems'
-require 'bundler'
-Bundler.setup(:default, :development)
+Bundler.setup
 
-require 'active_record'
-require 'active_support'
+ENV["RAILS_ENV"] = "test"
+ENV['DATABASE_URL'] = 'sqlite3::memory:'
+
+require 'apps/rails4'
+require 'rspec/rails'
+Bundler.require :development
+
 require 'ror_push_notifications'
-require 'rspec'
-require 'rspec/mocks'
-require 'factory_girl'
-require 'logger'
-
-logger = Logger.new(STDOUT)
-logger.level = Logger::INFO
-ActiveRecord::Base.logger = logger
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
   :database => ':memory:'
 )
 
-ActiveRecord::Migrator.up File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'ror_push_notifications', 'templates', 'migrations')
+files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'ror_push_notifications', 'templates', 'migrations', '*.rb'))
 
-logger.level = Logger::DEBUG
+migrations = []
+files.each_with_index do |file, version|
+  name, scope = file.scan(/([_a-z0-9]*)\.?([_a-z0-9]*)?\.rb\z/).first
 
-FactoryGirl.find_definitions
+  name = name.camelize
+
+  migrations << ActiveRecord::MigrationProxy.new(name, version, file, scope)
+end
+
+migrations.sort_by(&:version)
+
+ActiveRecord::Migrator.new(:up, migrations).migrate
 
 RSpec.configure do |config|
-
+  config.use_transactional_fixtures = true
+  config.order = "random"
 end
