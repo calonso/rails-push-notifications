@@ -23,7 +23,9 @@ module RorPushNotifications
       end
 
       def self.next_migration_number(path)
-        Time.now.utc.strftime("%Y%m%d%H%M%S").to_i.to_s
+        @count ||= 0
+        @count += 1
+        (Time.now.utc.strftime("%Y%m%d%H%M%S").to_i + @count).to_s
       end
     end
   end
