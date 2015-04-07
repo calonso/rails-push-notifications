@@ -4,12 +4,14 @@ CodeClimate::TestReporter.start
 
 Bundler.setup
 
-ENV["RAILS_ENV"] = "test"
+ENV['RAILS_ENV'] = 'test'
 ENV['DATABASE_URL'] = 'sqlite3::memory:'
 
-require 'support/rails_apps/rails4'
+require 'rails_apps/rails4'
 require 'rspec/rails'
 Bundler.require :default, :development
+
+Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
 
 require 'rails-push-notifications'
 
