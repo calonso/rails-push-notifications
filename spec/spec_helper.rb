@@ -1,4 +1,7 @@
 
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
+
 Bundler.setup
 
 ENV["RAILS_ENV"] = "test"

@@ -1,4 +1,5 @@
 # Rpn (Ruby on Rails Push Notifications)
+[![Build Status](https://travis-ci.org/calonso/rails-push-notifications.svg)](https://travis-ci.org/calonso/rails-push-notifications) [![Code Climate](https://codeclimate.com/github/calonso/rails-push-notifications/badges/gpa.svg)](https://codeclimate.com/github/calonso/rails-push-notifications) [![Test Coverage](https://codeclimate.com/github/calonso/rails-push-notifications/badges/coverage.svg)](https://codeclimate.com/github/calonso/rails-push-notifications)
 ## Professional iOS and Android push notifications for Ruby on Rails
 
 Rpn is an intuitive and easy to use gem that will allow you to easily add both iOS and Android Push Notifications.
