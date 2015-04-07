@@ -1,4 +1,3 @@
-require 'spec_helper'
 
 describe Rpn::ApnsConfig do
 
@@ -6,15 +5,43 @@ describe Rpn::ApnsConfig do
     [8, 8, i].pack 'ccN'
   end
 
-  let(:ssl_socket) { double(:write => 1, :flush => 1, :close => 1) }
+  let(:ssl_socket) { double write: 1, flush: 1, close: 1 }
 
   before(:each) do
-    Rpn::ApnsConnection.stub(:open).and_return ([ssl_socket, double(:close => 1)])
+    allow(Rpn::ApnsConnection).to receive(:open).and_return ([ssl_socket, double(:close => 1)])
   end
 
   let(:app) { FactoryGirl.create :apns_config }
 
-  describe 'do send notifications method' do
+  describe 'managing single notifications' do
+    let(:device) { FactoryGirl.create :apns_device, config: app }
+    let!(:notification) { Rpn::ApnsNotification.create_from_params! device, 'alert', 1, 'true', {} }
+
+    context 'successful push' do
+      it 'pushes the notification' do
+        IO.should_receive(:select).once
+        ssl_socket.should_receive(:write).once
+        ssl_socket.should_receive(:flush).once
+        app.send_notifications
+      end
+
+      it 'marks the notification as sent' do
+        IO.should_receive(:select).once
+        expect do
+          app.send_notifications
+        end.to change { notification.reload.sent_at }.from(nil)
+      end
+
+      it 'saves the result code' do
+        IO.should_receive(:select).once
+        expect do
+          app.send_notifications
+        end.to change { notification.reload.error }.from(nil).to Rpn::ApnsNotification::NO_ERROR_STATUS_CODE.to_s
+      end
+    end
+  end
+
+  describe 'managing bulk notifications' do
     let(:tokens) { %w(a b c d e) }
     let(:notification) { Rpn::ApnsBulkNotification.create_from_params! tokens, app.id, 'alert', 1, 'true', {} }
 

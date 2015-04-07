@@ -6,8 +6,6 @@ class Rpn::ApnsConfig < Rpn::Base
   has_many :notifications, class_name: 'Rpn::ApnsNotification', dependent: :delete_all, as: :config
   has_many :bulk_notifications, class_name: 'Rpn::ApnsBulkNotification', dependent: :delete_all, as: :config
 
-  attr_accessible :sandbox_mode
-
   validates :apns_dev_cert, presence: true
   validates :apns_prod_cert, presence: true
 
