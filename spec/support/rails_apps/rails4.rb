@@ -1,9 +1,9 @@
-require "rails"
+require 'rails'
 require 'rails/all'
 require 'action_view/testing/resolvers'
 require 'rails/test_help'
 
-require 'ror_push_notifications' # our gem
+require 'rails-push-notifications'
 
 module RailsPushNotificationsApp
   class Application < Rails::Application

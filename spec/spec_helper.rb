@@ -4,18 +4,18 @@ Bundler.setup
 ENV["RAILS_ENV"] = "test"
 ENV['DATABASE_URL'] = 'sqlite3::memory:'
 
-require 'apps/rails4'
+require 'support/rails_apps/rails4'
 require 'rspec/rails'
 Bundler.require :development
 
-require 'ror_push_notifications'
+require 'rails-push-notifications'
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
   :database => ':memory:'
 )
 
-files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'ror_push_notifications', 'templates', 'migrations', '*.rb'))
+files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'rails-push-notifications', 'templates', 'migrations', '*.rb'))
 
 migrations = []
 files.each_with_index do |file, version|

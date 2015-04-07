@@ -1,6 +1,6 @@
-require 'generators/ror_push_notifications/migrations_generator'
+require 'generators/rails-push-notifications/migrations_generator'
 
-describe RorPushNotifications::Generators::MigrationsGenerator, type: :generator do
+describe RailsPushNotifications::Generators::MigrationsGenerator, type: :generator do
   destination File.expand_path("../tmp", __FILE__)
 
   before do
@@ -16,9 +16,7 @@ describe RorPushNotifications::Generators::MigrationsGenerator, type: :generator
     expect(destination_root).to have_structure {
       directory 'db' do
         directory 'migrate' do
-          migration 'create_rpn_configs'
-          migration 'create_rpn_devices'
-          migration 'create_rpn_notifications'
+          migration 'create_rails_push_notifications_apps'
         end
       end
     }

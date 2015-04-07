@@ -1,7 +1,7 @@
 require 'rails/generators/active_record'
 
 
-module RorPushNotifications
+module RailsPushNotifications
   module Generators
     class MigrationsGenerator < Rails::Generators::Base
       include Rails::Generators::Migration
@@ -15,7 +15,7 @@ module RorPushNotifications
       source_root File.expand_path('../templates/migrations', __FILE__)
 
       def create_migrations
-        templates = %w(create_rpn_configs create_rpn_devices create_rpn_notifications)
+        templates = %w(create_rails_push_notifications_apps)
 
         templates.each do |file|
           migration_template("#{file}.rb", "db/migrate/#{file}.rb")
