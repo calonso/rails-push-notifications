@@ -9,13 +9,13 @@ ENV['DATABASE_URL'] = 'sqlite3::memory:'
 
 require 'support/rails_apps/rails4'
 require 'rspec/rails'
-Bundler.require :development
+Bundler.require :default, :development
 
 require 'rails-push-notifications'
 
 ActiveRecord::Base.establish_connection(
-  :adapter => 'sqlite3',
-  :database => ':memory:'
+ :adapter => 'sqlite3',
+ :database => ':memory:'
 )
 
 files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'rails-push-notifications', 'templates', 'migrations', '*.rb'))
@@ -35,5 +35,5 @@ ActiveRecord::Migrator.new(:up, migrations).migrate
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
-  config.order = "random"
+  config.order = :random
 end

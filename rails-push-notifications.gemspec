@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.3'
 
-  s.add_dependency 'activerecord', '~> 4.1'
+  s.add_dependency 'rails', '~> 4.1'
   s.add_dependency 'ruby-push-notifications', '~> 0.1'
 
   s.add_development_dependency 'sqlite3'
