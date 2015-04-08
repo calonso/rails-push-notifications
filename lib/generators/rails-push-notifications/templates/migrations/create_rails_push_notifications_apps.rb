@@ -5,7 +5,7 @@ class CreateRailsPushNotificationsApps < ActiveRecord::Migration
       t.text :apns_prod_cert
       t.boolean :sandbox_mode, deafult: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

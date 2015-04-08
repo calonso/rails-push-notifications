@@ -13,12 +13,13 @@ describe RailsPushNotifications::Generators::MigrationsGenerator, type: :generat
   end
 
   it 'creates the migrations' do
-    expect(destination_root).to have_structure {
+    expect(destination_root).to have_structure do
       directory 'db' do
         directory 'migrate' do
           migration 'create_rails_push_notifications_apps'
+          migration 'create_rails_push_notifications_notifications'
         end
       end
-    }
+    end
   end
 end

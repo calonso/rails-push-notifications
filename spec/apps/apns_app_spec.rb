@@ -19,5 +19,16 @@ module RailsPushNotifications
         expect(app).to_not be_valid
       end
     end
+
+    describe 'notifications relationship' do
+
+      let(:app) { create :apns_app }
+
+      it 'can create new notifications' do
+        expect do
+          app.notifications.create
+        end.to change { app.reload.notifications.count }.from(0).to 1
+      end
+    end
   end
 end

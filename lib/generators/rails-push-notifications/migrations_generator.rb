@@ -9,7 +9,10 @@ module RailsPushNotifications
       source_root File.expand_path('../templates/migrations', __FILE__)
 
       def create_migrations
-        templates = %w(create_rails_push_notifications_apps)
+        templates = [
+          'create_rails_push_notifications_apps',
+          'create_rails_push_notifications_notifications'
+        ]
 
         templates.each do |file|
           migration_template("#{file}.rb", "db/migrate/#{file}.rb")
