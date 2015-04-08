@@ -26,7 +26,7 @@ module RailsPushNotifications
 
       it 'can create new notifications' do
         expect do
-          app.notifications.create
+          app.notifications.create attributes_for :notification
         end.to change { app.reload.notifications.count }.from(0).to 1
       end
     end
