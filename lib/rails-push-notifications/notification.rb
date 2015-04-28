@@ -12,6 +12,9 @@ module RailsPushNotifications
 
     serialize :data, Hash
     serialize :destinations, Array
+    serialize :results
+
+    before_save { |record| record.sent = !record.results.nil?; true }
 
   end
 end

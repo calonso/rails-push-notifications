@@ -51,6 +51,37 @@ module RailsPushNotifications
         notification.save
         expect(notification.sent).to eq false
       end
+
+      it 'is sent if results assigned' do
+        notification.save
+        expect do
+          notification.results = 'abc'
+          notification.save
+        end.to change { notification.reload.sent }.from(false).to true
+      end
+    end
+
+    describe 'results' do
+      it 'serializes any object' do
+        class Test
+          attr_reader :value1, :value2
+
+          def initialize(value1, value2)
+            @value1 = value1
+            @value2 = value2
+          end
+
+          def ==(other)
+            other != nil && other.is_a?(Test) &&
+            @value1 == other.value1 && @value2 == other.value2 || super(other)
+          end
+        end
+
+        notification.results = Test.new('abc', 123)
+        notification.save
+        notification.reload
+        expect(notification.results).to eq Test.new('abc', 123)
+      end
     end
   end
 end
