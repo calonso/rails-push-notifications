@@ -2,7 +2,7 @@
 module RailsPushNotifications
   describe Notification, type: :model do
 
-    let(:notification) { build :notification }
+    let(:notification) { build :apns_notification }
 
     describe 'app relationship' do
       it 'requires an app' do
