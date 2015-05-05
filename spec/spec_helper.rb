@@ -10,6 +10,7 @@ ENV['DATABASE_URL'] = 'sqlite3::memory:'
 require 'rails_apps/rails4'
 require 'rspec/rails'
 Bundler.require :default, :development
+require 'webmock/rspec'
 require 'ruby-push-notifications'
 
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
@@ -40,3 +41,5 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.order = :random
 end
+
+WebMock.disable_net_connect!(:allow => "codeclimate.com")

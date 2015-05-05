@@ -1,1 +1,2 @@
-require 'rails-push-notifications/apps/apns_app.rb'
+require 'rails-push-notifications/apps/apns_app'
+require 'rails-push-notifications/apps/gcm_app'
