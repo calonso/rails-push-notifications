@@ -49,7 +49,7 @@ module RailsPushNotifications
       it 'assigns results' do
         expect do
           app.push_notifications
-        end.to change { notifications.map { |n| n.reload.results } }.from([nil] * 10).to([[RubyPushNotifications::APNS::NO_ERROR_STATUS_CODE]] * 10)
+        end.to change { notifications.map { |n| n.reload.results && n.results.individual_results } }.from([nil] * 10).to([[RubyPushNotifications::APNS::NO_ERROR_STATUS_CODE]] * 10)
       end
 
       it 'marks as sent' do
