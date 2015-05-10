@@ -12,7 +12,6 @@ require 'rspec/rails'
 Bundler.require :default, :development
 require 'webmock/rspec'
 require 'ruby-push-notifications'
-require 'pry'
 
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
 
