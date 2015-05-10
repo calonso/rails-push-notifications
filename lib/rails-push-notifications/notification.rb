@@ -1,4 +1,3 @@
-
 module RailsPushNotifications
   class Notification < ActiveRecord::Base
 
