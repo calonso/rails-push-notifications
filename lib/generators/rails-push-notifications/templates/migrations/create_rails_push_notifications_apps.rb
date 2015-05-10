@@ -13,5 +13,11 @@ class CreateRailsPushNotificationsApps < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    create_table :rails_push_notifications_mpns_apps do |t|
+      t.text :cert
+
+      t.timestamps null: false
+    end
   end
 end

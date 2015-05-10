@@ -9,4 +9,8 @@ FactoryGirl.define do
   factory :gcm_app, class: 'RailsPushNotifications::GCMApp' do
     gcm_key   'abc123def456'
   end
+
+  factory :mpns_app, class: 'RailsPushNotifications::MPNSApp' do
+    cert   'abc'
+  end
 end
