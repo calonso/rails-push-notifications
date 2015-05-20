@@ -15,5 +15,12 @@ module RailsPushNotifications
 
     before_save { |record| record.sent = !record.results.nil?; true }
 
+    before_save do |record|
+      if record.results_changed? && record.results
+        record.success = record.results.success
+        record.failed = record.results.failed
+      end
+    end
+
   end
 end

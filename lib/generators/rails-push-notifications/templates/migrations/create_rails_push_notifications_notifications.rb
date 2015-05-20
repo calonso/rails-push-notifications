@@ -6,6 +6,8 @@ class CreateRailsPushNotificationsNotifications < ActiveRecord::Migration
       t.string :app_type
       t.text :data
       t.text :results
+      t.integer :success
+      t.integer :failed
       t.boolean :sent, default: false
 
       t.timestamps null: false

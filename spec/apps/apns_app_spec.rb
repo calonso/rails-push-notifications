@@ -18,6 +18,22 @@ module RailsPushNotifications
         app.apns_prod_cert = nil
         expect(app).to_not be_valid
       end
+
+      describe 'sandbox mode' do
+        it 'automatically sets sandbox mode if missing' do
+          app.sandbox_mode = nil
+          expect do
+            app.valid?
+          end.to change { app.sandbox_mode }.from(nil).to true
+        end
+
+        it 'uses the value if given' do
+          app.sandbox_mode = false
+          expect do
+            app.valid?
+          end.to_not change { app.sandbox_mode }.from false
+        end
+      end
     end
 
     describe 'notifications relationship' do

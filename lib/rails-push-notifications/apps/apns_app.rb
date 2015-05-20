@@ -5,9 +5,8 @@ module RailsPushNotifications
 
     validates :apns_dev_cert, presence: true
     validates :apns_prod_cert, presence: true
-    validates :sandbox_mode, presence: true
 
-    before_validation { |app| app.sandbox_mode ||= true }
+    before_validation { |app| app.sandbox_mode = true if app.sandbox_mode.nil? }
 
     private
 

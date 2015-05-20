@@ -64,11 +64,13 @@ module RailsPushNotifications
     describe 'results' do
       it 'serializes any object' do
         class Test
-          attr_reader :value1, :value2
+          attr_reader :value1, :value2, :success, :failed
 
           def initialize(value1, value2)
             @value1 = value1
             @value2 = value2
+            @success = 10
+            @failed = 2
           end
 
           def ==(other)
@@ -81,6 +83,8 @@ module RailsPushNotifications
         notification.save
         notification.reload
         expect(notification.results).to eq Test.new('abc', 123)
+        expect(notification.success).to eq 10
+        expect(notification.failed).to eq 2
       end
     end
   end
