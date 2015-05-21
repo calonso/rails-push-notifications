@@ -6,3 +6,5 @@ source "http://rubygems.org"
 gemspec
 
 gem "codeclimate-test-reporter", group: :test, require: nil
+gem "appraisal"
+gem "ruby-push-notifications", path: '/Users/calonso/dev/ruby-push-notifications'

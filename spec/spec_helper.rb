@@ -4,23 +4,39 @@ CodeClimate::TestReporter.start
 
 Bundler.setup
 
-ENV['RAILS_ENV'] = 'test'
-ENV['DATABASE_URL'] = 'sqlite3::memory:'
+require 'rails'
 
-require 'rails_apps/rails4'
-require 'rspec/rails'
-Bundler.require :default, :development
+ENV['RAILS_ENV'] = 'test'
+
+case "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+when '3.2'
+  ENV['DATABASE_URL'] = 'sqlite3://localhost/:memory:'
+  require 'rails_apps/rails3_2'
+when '4.0'
+  ENV['DATABASE_URL'] = 'sqlite3://localhost/:memory:'
+  require 'rails_apps/rails4'
+when '4.1', '4.2'
+  ENV['DATABASE_URL'] = 'sqlite3::memory:'
+  require 'rails_apps/rails4'
+else
+  raise NotImplementedError.new "Rails Friendly URLs gem doesn't support Rails #{Rails.version}"
+end
+
+Bundler.require :default
+Bundler.require :development
+
 require 'webmock/rspec'
+require 'rspec/rails'
 require 'ruby-push-notifications'
 
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
 
-require 'rails-push-notifications'
-
+=begin
 ActiveRecord::Base.establish_connection(
  :adapter => 'sqlite3',
  :database => ':memory:'
 )
+=end
 
 files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'rails-push-notifications', 'templates', 'migrations', '*.rb'))
 
