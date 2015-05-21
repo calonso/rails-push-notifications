@@ -6,7 +6,6 @@ module RailsPushNotifications
     end
 
     describe 'validations' do
-
       let(:app) { build :gcm_app }
 
       it 'requires a gcm key' do
@@ -16,7 +15,6 @@ module RailsPushNotifications
     end
 
     describe 'notifications relationship' do
-
       let(:app) { create :gcm_app }
 
       it 'can create new notifications' do
@@ -27,11 +25,10 @@ module RailsPushNotifications
     end
 
     describe '#push_notifications' do
-
       let(:app) { create :gcm_app }
-      let(:notifications) {
+      let(:notifications) do
         (1..10).map { create :gcm_notification, app: app }
-      }
+      end
       let(:single_notification) { create :gcm_notification, app: app }
 
       let(:response) { JSON.dump a: 1 }
@@ -44,7 +41,10 @@ module RailsPushNotifications
       it 'assigns results' do
         expect do
           app.push_notifications
-        end.to change { notifications.map { |n| n.reload.results } }.from([nil] * 10).to([RubyPushNotifications::GCM::GCMResponse.new(200, response)] * 10)
+        end.to change {
+          notifications.map { |n| n.reload.results }
+          }.from([nil] * 10).
+          to([RubyPushNotifications::GCM::GCMResponse.new(200, response)] * 10)
       end
 
       it 'marks as sent' do
@@ -59,7 +59,8 @@ module RailsPushNotifications
         before { app.push_notifications }
 
         it "doesn't send already sent notifications" do
-          expect(RubyPushNotifications::GCM::GCMConnection).to_not receive(:post)
+          expect(RubyPushNotifications::GCM::GCMConnection).
+            to_not receive(:post)
           app.push_notifications
         end
       end

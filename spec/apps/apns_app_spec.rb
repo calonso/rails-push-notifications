@@ -46,7 +46,6 @@ module RailsPushNotifications
     end
 
     describe '#push_notifications' do
-
       let(:app) { create :apns_app }
       let(:notifications) do
         (1..10).map { create :apns_notification, app: app }
