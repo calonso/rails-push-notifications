@@ -1,21 +1,28 @@
 
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
+
 Bundler.setup
 
-ENV["RAILS_ENV"] = "test"
+ENV['RAILS_ENV'] = 'test'
 ENV['DATABASE_URL'] = 'sqlite3::memory:'
 
-require 'apps/rails4'
+require 'rails_apps/rails4'
 require 'rspec/rails'
-Bundler.require :development
+Bundler.require :default, :development
+require 'webmock/rspec'
+require 'ruby-push-notifications'
 
-require 'ror_push_notifications'
+Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
+
+require 'rails-push-notifications'
 
 ActiveRecord::Base.establish_connection(
-  :adapter => 'sqlite3',
-  :database => ':memory:'
+ :adapter => 'sqlite3',
+ :database => ':memory:'
 )
 
-files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'ror_push_notifications', 'templates', 'migrations', '*.rb'))
+files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'rails-push-notifications', 'templates', 'migrations', '*.rb'))
 
 migrations = []
 files.each_with_index do |file, version|
@@ -32,5 +39,7 @@ ActiveRecord::Migrator.new(:up, migrations).migrate
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
-  config.order = "random"
+  config.order = :random
 end
+
+WebMock.disable_net_connect!(:allow => "codeclimate.com")
