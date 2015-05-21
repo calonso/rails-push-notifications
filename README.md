@@ -44,7 +44,7 @@ Once exported, to convert it to the readable .pem format simply run:
 
 Now it's time to create our applications
 
-    app = RailsPushNotifications::ApnsApp.new
+    app = RailsPushNotifications::APNSApp.new
     app.apns_dev_cert = File.read('path/to/your/development/certificate.pem')
     app.apns_prod_cert = File.read('path/to/your/production/certificate.pem')
     app.sandbox_mode = true
@@ -56,7 +56,7 @@ And that's it!! You can create as many different applications as you want. Rails
 
 The only thing you need is the API_KEY that you will get from the Google APIS Console > API Access
 
-    app = Rpn::GCMApp.new
+    app = RailsPushNotifications::GCMApp.new
     app.gcm_key = '<your app api key>'
     app.save
 
