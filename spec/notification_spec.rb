@@ -2,6 +2,22 @@
 module RailsPushNotifications
   describe Notification, type: :model do
 
+    class FakeResults
+      attr_reader :value1, :success, :failed
+
+      def initialize(value1, success, failed)
+        @value1 = value1
+        @success = success
+        @failed = failed
+      end
+
+      def ==(other)
+        other != nil && other.is_a?(FakeResults) &&
+        @value1 == other.value1 && @success == other.success &&
+        @failed == failed || super(other)
+      end
+    end
+
     let(:notification) { build :apns_notification }
 
     describe 'app relationship' do
@@ -55,36 +71,25 @@ module RailsPushNotifications
       it 'is sent if results assigned' do
         notification.save
         expect do
-          notification.results = 'abc'
+          notification.results = FakeResults.new(1, 2, 3)
           notification.save
         end.to change { notification.reload.sent }.from(false).to true
       end
     end
 
     describe 'results' do
+
+      let(:success) { 1 }
+      let(:failed) { 3 }
+      let(:results) { FakeResults.new 'abc', success, failed }
+
       it 'serializes any object' do
-        class Test
-          attr_reader :value1, :value2, :success, :failed
-
-          def initialize(value1, value2)
-            @value1 = value1
-            @value2 = value2
-            @success = 10
-            @failed = 2
-          end
-
-          def ==(other)
-            other != nil && other.is_a?(Test) &&
-            @value1 == other.value1 && @value2 == other.value2 || super(other)
-          end
-        end
-
-        notification.results = Test.new('abc', 123)
+        notification.results = results
         notification.save
         notification.reload
-        expect(notification.results).to eq Test.new('abc', 123)
-        expect(notification.success).to eq 10
-        expect(notification.failed).to eq 2
+        expect(notification.results).to eq results
+        expect(notification.success).to eq success
+        expect(notification.failed).to eq failed
       end
     end
   end

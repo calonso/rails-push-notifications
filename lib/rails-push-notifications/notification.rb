@@ -13,13 +13,17 @@ module RailsPushNotifications
     serialize :destinations, Array
     serialize :results
 
-    before_save { |record| record.sent = !record.results.nil?; true }
+    before_save do |record|
+      record.sent = !record.results.nil?
+      true
+    end
 
     before_save do |record|
       if record.results_changed? && record.results
         record.success = record.results.success
         record.failed = record.results.failed
       end
+      true
     end
 
   end
