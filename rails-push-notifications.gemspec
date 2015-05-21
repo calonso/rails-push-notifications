@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Carlos Alonso']
   s.email       = ['info@mrcalonso.com']
   s.homepage    = 'https://github.com/calonso/rails-push-notifications'
-  s.summary     = 'Professional iOS and Android push notifications for Ruby on Rails'
-  s.description = 'Free Open Source Rails gem for performing push notifications for both iOS and Android devices'
+  s.summary     = 'Professional iOS, Android and Windows Phone push notifications for Ruby on Rails'
+  s.description = 'Rails gem to push notifications for iOS, Android and Windows Phone devices'
 
   s.files = Dir['{lib}/**/*'] + %w(MIT-LICENSE Rakefile README.md)
 
