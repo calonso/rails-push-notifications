@@ -9,7 +9,7 @@ Rpn supports:
 * Multiple Apple/Android/WinPhone applications/configurations
 * Single and Bulk notifications
 * Fully customizable notification's contents
-* Detailed feedback on notification's result
+* Detailed feedback on notification's results
 
 ## Live example
 
