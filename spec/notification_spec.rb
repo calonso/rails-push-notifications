@@ -40,6 +40,7 @@ module RailsPushNotifications
       it 'has to be a Hash' do
         expect do
           notification.data = 'dummy text'
+          notification.save
         end.to raise_error ActiveRecord::SerializationTypeMismatch
       end
     end
@@ -53,6 +54,7 @@ module RailsPushNotifications
       it 'has to be an array' do
         expect do
           notification.destinations = 'dummy destinations'
+          notification.save
         end.to raise_error ActiveRecord::SerializationTypeMismatch
       end
 
