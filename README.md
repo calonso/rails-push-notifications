@@ -10,10 +10,17 @@ Rpn supports:
 * Single and Bulk notifications
 * Fully customizable notification's contents
 
+## Live example
+
+Want to try this gem live?
+
+Browse [https://rails-push-notifications-test.herokuapp.com](https://rails-push-notifications-test.herokuapp.com) and play with it!
+The source code for that project is here: [https://github.com/calonso/rails_push_notifications_test](https://github.com/calonso/rails_push_notifications_test)
+
 ## Installation
 To install the gem simply add this line to your Gemfile
 
-    gem 'rails-push-notifications', '~> 0.2', github: 'calonso/rails-push-notifications'
+    gem 'rails-push-notifications', '~> 0.2'
 
 and then install it by running
 
