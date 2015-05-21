@@ -25,6 +25,5 @@ module RailsPushNotifications
       end
       true
     end
-
   end
 end

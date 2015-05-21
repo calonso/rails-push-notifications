@@ -22,6 +22,5 @@ module RailsPushNotifications
     def find_pending
       notifications.where sent: false
     end
-
   end
 end

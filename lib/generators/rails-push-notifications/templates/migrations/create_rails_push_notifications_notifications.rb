@@ -13,6 +13,8 @@ class CreateRailsPushNotificationsNotifications < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :rails_push_notifications_notifications, [:app_id, :app_type, :sent], name: 'app_and_sent_index_on_rails_push_notifications'
+    add_index :rails_push_notifications_notifications,
+      [:app_id, :app_type, :sent],
+      name: 'app_and_sent_index_on_rails_push_notifications'
   end
 end
