@@ -2,13 +2,14 @@
 [![Build Status](https://travis-ci.org/calonso/rails-push-notifications.svg)](https://travis-ci.org/calonso/rails-push-notifications) [![Code Climate](https://codeclimate.com/github/calonso/rails-push-notifications/badges/gpa.svg)](https://codeclimate.com/github/calonso/rails-push-notifications)[![Test Coverage](https://codeclimate.com/github/calonso/rails-push-notifications/badges/coverage.svg)](https://codeclimate.com/github/calonso/rails-push-notifications/coverage)
 ## Professional iOS, Android and Windows Phone push notifications for Ruby on Rails
 
-Rpn is an intuitive and easy to use gem that will allow you to easily add Push Notifications to your project.
+RailsPushNotifications is an intuitive and easy to use gem that will allow you to easily add Push Notifications to your project.
 
-Rpn supports:
+RailsPushNotifications key features:
 
 * Multiple Apple/Android/WinPhone applications/configurations
 * Single and Bulk notifications
 * Fully customizable notification's contents
+* Detailed feedback on each individual notification's push results.
 
 ## Live example
 
@@ -20,7 +21,7 @@ The source code for that project is here: [https://github.com/calonso/rails_push
 ## Installation
 To install the gem simply add this line to your Gemfile
 
-    gem 'rails-push-notifications', '~> 0.2'
+    gem 'rails-push-notifications', '~> 0.2.0'
 
 and then install it by running
 
@@ -136,7 +137,8 @@ any improvement/bug you may find.
 Please, feel free to contribute in building any of those or adding more stuff to this list!
 
 * Better generation of the data for each kind of notification. Hiding the particulars
-to avoid bugs
+to avoid bugs.
+* Rake task to push all notifications from all applications.
 
 ## Contributing
 
