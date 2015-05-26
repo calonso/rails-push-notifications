@@ -12,6 +12,7 @@ case "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
 when '3.2'
   ENV['DATABASE_URL'] = 'sqlite3://localhost/:memory:'
   require 'rails_apps/rails3_2'
+  require 'active_record/migration'
 when '4.0'
   ENV['DATABASE_URL'] = 'sqlite3://localhost/:memory:'
   require 'rails_apps/rails4'
@@ -31,13 +32,6 @@ require 'ruby-push-notifications'
 
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
 
-=begin
-ActiveRecord::Base.establish_connection(
- :adapter => 'sqlite3',
- :database => ':memory:'
-)
-=end
-
 files = Dir.glob(File.join(File.dirname(__FILE__), '..', 'lib', 'generators', 'rails-push-notifications', 'templates', 'migrations', '*.rb'))
 
 migrations = []
@@ -51,7 +45,13 @@ end
 
 migrations.sort_by(&:version)
 
-ActiveRecord::Migrator.new(:up, migrations).migrate
+migrator = ActiveRecord::Migrator.new(:up, migrations)
+
+if Rails::VERSION::MAJOR == 3
+  migrator.instance_variable_set(:@migrations, migrations)
+end
+
+migrator.migrate
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
