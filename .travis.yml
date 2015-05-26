@@ -5,3 +5,9 @@ rvm:
   - "2.0.0"
   - "1.9.3"
 env: CODECLIMATE_REPO_TOKEN=a71858029824dc27376b83df5f2d38ab31758505c28267332ac411ca6f4d3335
+gemfile:
+  - gemfiles/rails3.gemfile
+  - gemfiles/rails4_0.gemfile
+  - gemfiles/rails4_1.gemfile
+  - gemfiles/rails4_2.gemfile
+script: "bundle exec rspec"
