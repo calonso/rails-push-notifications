@@ -4,7 +4,6 @@ source "http://rubygems.org"
 
 gem "codeclimate-test-reporter", :group => :test, :require => nil
 gem "appraisal"
-gem "ruby-push-notifications", :path => "/Users/calonso/dev/ruby-push-notifications"
 gem "rails", "~> 3.2.0"
 gem "test-unit"
 
