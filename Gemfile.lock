@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     rails-push-notifications (0.2.2)
-      rails
-      ruby-push-notifications (~> 0.3.1)
+      rails (>= 3.2)
+      ruby-push-notifications (~> 0.3)
 
 GEM
   remote: http://rubygems.org/
