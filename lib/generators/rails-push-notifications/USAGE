@@ -1,6 +1,6 @@
 Description:
-    Generate migrations needed to create RPN tables
+    Generate migrations needed to create RailsPushNotifications tables
 
 Example:
-    rails generate ror_push_notifications:migrations
+    rails generate rails_push_notifications:migrations
 
