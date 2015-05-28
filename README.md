@@ -1,4 +1,4 @@
-# Rpn (Ruby on Rails Push Notifications)
+# Rails Push Notifications
 [![Build Status](https://travis-ci.org/calonso/rails-push-notifications.svg)](https://travis-ci.org/calonso/rails-push-notifications) [![Code Climate](https://codeclimate.com/github/calonso/rails-push-notifications/badges/gpa.svg)](https://codeclimate.com/github/calonso/rails-push-notifications) [![Test Coverage](https://codeclimate.com/github/calonso/rails-push-notifications/badges/coverage.svg)](https://codeclimate.com/github/calonso/rails-push-notifications/coverage)
 ## Professional iOS, Android and Windows Phone push notifications for Ruby on Rails
 
