@@ -1,6 +1,5 @@
 appraise 'rails4_0' do
   gem 'rails', '~> 4.0.0'
-  gem 'test-unit'
 end
 
 appraise 'rails4_1' do

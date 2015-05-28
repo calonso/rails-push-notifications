@@ -20,7 +20,7 @@ when '4.1', '4.2'
   ENV['DATABASE_URL'] = 'sqlite3::memory:'
   require 'rails_apps/rails4'
 else
-  raise NotImplementedError.new "Rails Friendly URLs gem doesn't support Rails #{Rails.version}"
+  raise NotImplementedError.new "Rails Push Notifications gem doesn't support Rails #{Rails.version}"
 end
 
 Bundler.require :default

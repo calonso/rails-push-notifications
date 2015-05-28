@@ -5,6 +5,5 @@ source "http://rubygems.org"
 gem "codeclimate-test-reporter", :group => :test, :require => nil
 gem "appraisal"
 gem "rails", "~> 4.0.0"
-gem "test-unit"
 
 gemspec :path => "../"
