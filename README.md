@@ -40,7 +40,7 @@ First step when using RailsPushNotifications is to setup Apple/Android/WinPhone 
 
 Once you have configured your app as Apple Push Notifications Service enabled and you have requested and downloaded both the development and production certificates, it's time to convert them to a readable format (.pem) to import them into Rpn afterwards.
 
-To convert the certificates the first you need is to export them as .p12 files. To do this:
+To convert the certificates the first thing you need to do is to export them as .p12 files. To do this:
 
 1. Open Keychain Application of your Macintosh computer
 2. Find the recently generated certificates. Click the disclosure button on the left of your certificate and select both the certificate and the contained key
