@@ -102,7 +102,7 @@ the destinations and the data format will vary, so for example
         'Your first destination token',
         'Your second destination token'
       ],
-      data: { text: 'Hello GCM World!' }
+      data: { message: 'Hello GCM World!' }
     )
 
 ### WindowsPhone Notifications
