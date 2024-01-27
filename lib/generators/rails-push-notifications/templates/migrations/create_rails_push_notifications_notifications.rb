@@ -1,4 +1,4 @@
-class CreateRailsPushNotificationsNotifications < ActiveRecord::Migration
+class CreateRailsPushNotificationsNotifications < ActiveRecord::Migration[4.2]
   def change
     create_table :rails_push_notifications_notifications do |t|
       t.text :destinations

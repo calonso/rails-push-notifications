@@ -1,4 +1,4 @@
-class CreateRailsPushNotificationsApps < ActiveRecord::Migration
+class CreateRailsPushNotificationsApps < ActiveRecord::Migration[4.2]
   def self.up
     create_table :rails_push_notifications_apns_apps do |t|
       t.text :apns_dev_cert
